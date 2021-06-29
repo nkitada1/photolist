@@ -13,7 +13,7 @@ class PhotoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index, download']);
+        $this->middleware('auth')->except(['index', 'download', 'show']);
     }
 
     public function index()
@@ -38,6 +38,14 @@ class PhotoController extends Controller
 
         return response(Storage::cloud()->get($photo->filename), 200, $headers);
     }
+
+    public function show(string $id)
+    {
+        $photo = Photo::where('id', $id)->with(['owner'])->first();
+
+        return $photo ?? abort(404);
+    }
+
     /**
      * 写真投稿
      * @param StorePhoto $request
