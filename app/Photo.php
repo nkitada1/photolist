@@ -4,10 +4,25 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use App\User;
+use Illuminate\Support\Facades\Storage;
 
 class Photo extends Model
 {
     protected $keyType = 'string';
+
+    protected $appends = [
+        'url',
+    ];
+
+    protected $hidden = [
+        'user_id', 'filename',
+        self::CREATED_AT, self::UPDATED_AT,
+    ];
+
+    protected $visible = [
+        'id', 'owner', 'url'
+    ];
 
     const ID_LENGTH = 12;
 
@@ -49,5 +64,18 @@ class Photo extends Model
         }
 
         return $id;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id', 'users');
+    }
+
+    public function getUrlAttribute()
+    {
+        return Storage::cloud()->url($this->attributes['filename']);
     }
 }
