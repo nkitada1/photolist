@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use App\User;
 use Illuminate\Support\Facades\Storage;
+use App\Comment;
 
 class Photo extends Model
 {
@@ -21,7 +22,7 @@ class Photo extends Model
     ];
 
     protected $visible = [
-        'id', 'owner', 'url'
+        'id', 'owner', 'url', 'comments'
     ];
 
     protected $perPage = 6;
@@ -74,6 +75,11 @@ class Photo extends Model
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id', 'id', 'users');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->orderBy('id', 'desc');
     }
 
     public function getUrlAttribute()

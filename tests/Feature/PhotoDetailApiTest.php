@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Photo;
+use App\Comment;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,7 +17,7 @@ class PhotoDetailApiTest extends TestCase
      */
     public function should_success_json()
     {
-        factory(Photo::class)->create();
+        factory(Photo::class)->create()->each(fn($photo) => $photo->comments()->saveMany(factory(Comment::class, 3)->make()));
         $photo = Photo::first();
 
         $response = $this->json('GET', route('photo.show', [
@@ -30,6 +31,15 @@ class PhotoDetailApiTest extends TestCase
                 'owner' => [
                     'name' => $photo->owner->name,
                 ],
+                'comments' => $photo->comments
+                    ->sortByDesc('id')
+                    ->map(fn($comment) => [
+                        'author' => [
+                            'name' => $comment->author->name,
+                        ],
+                        'content' => $comment->content,
+                    ])
+                    ->all(),
             ]);
     }
 }
