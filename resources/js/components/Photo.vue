@@ -17,7 +17,7 @@
                     class="photo__action photo__action--like"
                     title="Like photo"
                 >
-                    <i class="icon ion-md-heart"></i>12
+                    <i class="icon ion-md-heart"></i>{{ item.likes_count }}
                 </button>
                 <a
                     class="photo__action"
@@ -42,6 +42,14 @@ export default {
         item: {
             type: Object,
             required: true
+        }
+    },
+    methods: {
+        like() {
+            this.$emit('like',{
+                id: this.item.id,
+                liked: this.item.liked_by_user
+            })
         }
     }
 }

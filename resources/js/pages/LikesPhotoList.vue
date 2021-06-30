@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         async fetchPhotos () {
-            const response = await axios.get(`/api/photos/?page=${this.page}`)
+            const response = await axios.get(`/api/photos/likes/?page=${this.page}`)
 
             if (response.status !== OK) {
                 this.$store.commit('error/setCode', response.status)
