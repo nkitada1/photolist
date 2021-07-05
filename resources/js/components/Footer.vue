@@ -9,6 +9,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+
 export default {
     methods: {
         async logout () {
