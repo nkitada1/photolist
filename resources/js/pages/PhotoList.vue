@@ -49,7 +49,7 @@ export default {
             this.currentPage = response.data.current_page
             this.lastPage = response.data.last_page
         },
-        onLinkeClike({ id, liked }) {
+        onLikeClick({ id, liked }) {
             if (! this.$store.getters['auth/check']) {
                 alert('いいね機能を使うにはログインしてください。')
                 return false

@@ -107,4 +107,13 @@ class Photo extends Model
 
         return $this->likes->contains(fn($user) => $user->id === Auth::user()->id);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function($photo) {
+            $photo->likes()->detach();
+            $photo->comments()->delete();
+        });
+    }
 }

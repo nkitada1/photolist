@@ -5,6 +5,7 @@ import PhotoList from './pages/PhotoList.vue'
 import LikesPhotoList from "./pages/LikesPhotoList";
 import PhotoDetail from './pages/PhotoDetail.vue'
 import Login from './pages/Login.vue'
+import Users from "./pages/Users";
 
 import SystemError from './pages/errors/System.vue'
 import NotFound from './pages/errors/NotFound.vue'
@@ -29,6 +30,11 @@ const routes = [
             const page = route.query.page
             return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1 }
         }
+    },
+    {
+        path: '/users',
+        component: Users,
+        props: true
     },
     {
         path: '/photos/:id',

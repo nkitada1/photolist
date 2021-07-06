@@ -20,6 +20,13 @@
             >
                 <i class="icon ion-md-arrow-round-down"></i>Download
             </a>
+            <button
+                class="button"
+                title="photo delete"
+                @click="onDeleteClick"
+            >
+                Delete
+            </button>
             <h2 class="photo-detail__title">
                 <i class="icon ion-md-chatboxes"></i>Comments
             </h2>
@@ -110,6 +117,11 @@ export default {
                 ...this.photo.comments
             ]
         },
+        onDeleteClick () {
+            if (confirm("全て削除します。よろしいでしょうか。")) {
+                this.delete()
+            }
+        },
         onLikeClick () {
             if (! this.isLogin) {
                 alert('いいね機能を使うにはログインしてください。')
@@ -143,6 +155,15 @@ export default {
 
             this.photo.likes_count = this.photo.likes_count - 1
             this.photo.liked_by_user = false
+        },
+        async delete () {
+            const response = await axios.delete(`/api/photos/${this.id}`)
+
+            if (response.status !== OK) {
+                this.$store.commit('error/setCode', response.status)
+                return false
+            }
+            this.$router.push("/");
         }
     },
     watch: {

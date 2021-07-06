@@ -89,6 +89,26 @@ class PhotoController extends Controller
         return response($photo, 201);
     }
 
+    /**
+     * 写真投稿
+     * @param StorePhoto $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Photo $photo)
+    {
+        DB::beginTransaction();
+
+        try {
+            $photo->delete();
+            // Storage::cloud()->delete($photo->filename);
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            // DBとの不整合を避けるためアップロードしたファイルを削除
+            throw $exception;
+        }
+    }
+
     public function addComment(Photo $photo, StoreComment $request)
     {
         $comment = new Comment();

@@ -15,6 +15,9 @@
                 <RouterLink class="button button--link" to="/likes">
                     likes
                 </RouterLink>
+                <RouterLink class="button button--link" to="/users">
+                    users
+                </RouterLink>
             </span>
             <div v-else class="navbar__item">
                 <RouterLink class="button button--link" to="/login">
